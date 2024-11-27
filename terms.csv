@@ -1,0 +1,79 @@
+terrm_id,name,definition,image,session_id
+1,Application software,"Software designed to help the user perform specific tasks, such as word processing or browsing the internet.",,0
+2,Word processor,"A program used for creating, editing, and formatting text documents.",,0
+3,formatting,"The process of arranging and styling text, images, and other elements in a document.",,0
+4,fonts,Styles of text characters used in digital and printed documents.,,0
+5,Icons,"Small graphical representations of programs, files, or commands.",,0
+6,appropriate,Suitable or proper in a particular situation.,,0
+7,copyright,"Legal protection for the creators of original works, giving them exclusive rights to use and distribute their creations.",,0
+8,licensing,Granting permission to use intellectual property under specific conditions.,,0
+9,Creative Commons,A licensing system that allows creators to share their work with others under defined terms.,,0
+10,text wrapping,A feature that adjusts the layout of text around images or objects in a document.,,0
+11,cropping,The process of trimming the edges of an image to focus on a particular area.,,0
+12,Recolouring,Changing the colors in an image or design.,,0
+13,Credibility,The quality of being trusted and believed in.,,0
+14,source,The origin of information or data.,,0
+15,Audience,"The group of people for whom a message, work, or content is intended.",,0
+16,Plagiarism,Using someone else's work or ideas without giving proper credit.,,0
+17,referencing,Citing sources used in a work to acknowledge their contribution.,,0
+18,citation,A formal reference to a source of information.,,0
+19,paraphrase,Expressing the meaning of something written or spoken using different words.,,0
+20,Blog,An online journal or informational website displaying information in reverse chronological order.,,0
+21,Components,Parts or elements that make up a whole system or structure.,,0
+22,Publish,To make content available to the public.,,0
+23,Header,Text or graphics that appear at the top of a document or section.,,0
+24,Footers,Text or graphics that appear at the bottom of a document or section.,,0
+25,Blog,An online journal or informational website displaying information in reverse chronological order.,,0
+26,assessment criteria,Standards or benchmarks used to evaluate performance or work.,,0
+27,feedback,Information provided about performance or work to aid improvement.,,0
+28,summative,Evaluation conducted at the end of a unit or course to assess overall performance.,,0
+29,Algorithm,A set of step-by-step instructions for solving a problem or performing a task.,,0
+30,Program,A set of instructions that a computer executes to perform a specific task.,,0
+31,Programming language,A formal language used to write instructions for computers.,,0
+32,Translation,The process of converting code written in a programming language into machine language.,,0
+33,Execution,The act of running a program or performing a set of instructions.,,0
+34,Interpreter,A program that translates and executes code line by line.,,0
+35,Programming environment,"A software application used for writing, testing, and debugging code.",,0
+36,Input,Data provided to a computer for processing.,,0
+37,Output,The result produced by a computer after processing input data.,,0
+38,Variables,Named storage locations in a program that hold values.,,0
+39,Assignment,The act of setting a value to a variable.,,0
+40,Operators,"Symbols used in programming to perform operations, such as addition or comparison.",,0
+41,Expressions,"Combinations of variables, values, and operators that produce a result.",,0
+42,Integer,"A whole number, positive or negative, without a decimal point.",,0
+43,String,A sequence of characters used as text in programming.,,0
+44,Datatype,A classification of data that determines the type of values a variable can hold.,,0
+45,Execution,The act of running a program or performing a set of instructions.,,0
+46,Walk-through,A step-by-step explanation of a process or solution.,,0
+47,Selection,The process of making decisions in a program based on conditions.,,0
+48,Relational operators,"Operators used to compare values, such as greater than or equal to.",,0
+49,Comparison operators,"Symbols used to compare two values, resulting in true or false.",,0
+50,Logical expressions,Expressions combining two or more conditions using logical operators.,,0
+51,Boolean expressions,Expressions that evaluate to true or false.,,0
+52,Conditions,Statements that determine whether certain actions should be executed.,,0
+53,Randomness,The quality of lacking predictability or pattern.,,0
+54,Multi-branch selection,A programming structure that allows multiple choices or outcomes based on conditions.,,0
+55,Iteration,The process of repeating a set of instructions in a program.,,0
+56,Selection,The process of making decisions in a program based on conditions.,,0
+57,Counting,Adding together a value and an incrementer. ,,0
+58,Boolean operators,"Operators used to combine true/false values, such as AND, OR, and NOT.",,0
+59,Counting,Adding together a value and an incrementer. ,,0
+60,Flags,Variables used to indicate a condition or status in a program.,,0
+61,Digital footprint,The unique trail of data that a person creates when they use the internet.,,0
+62,Snapmaps,A feature of Snapchat (the social media app) which allows people to track and pinpoint where others are on a map.,,0
+63,Compulsive design,Design which makes us feel irresistibly driven to interact with a product.,,0
+64,Dopamine,"A 'feel good' neurotransmitter which is released to reward specific behaviours, telling the brain that it should come back for more.",,0
+65,Neurotransmitter,A chemical messenger in the brain.,,0
+66,Social media,"Internet platforms which allow people to communicate and share information with others (examples include: Tumblr, Snapchat, Instagram and Facebook).",,0
+67,Self-esteem,A personâ€™s opinion of themselves.,,0
+68,Catfish,Someone who uses a different identity online in order to trick another person.,,0
+69,FaceTime,A video calling service.,,0
+70,Exploitation,Using someone unfairly with a malicious intention.,,0
+71,Fake News,News which is presented as factually accurate even though it is untrue or misleading.,,0
+72,Satire or Parody,Joke news that is meant to make fun of the media or people. It is not meant to be believed or taken seriously.,,0
+73,Misrepresentation,"Stories that have some truth but are not totally accurate, because of human error or bias.",,0
+74,Disinformation,"Totally made up news that someone has created to make money, cause confusion or manipulate people.",,0
+75,Don't @ Me,"A phrase used after posting an unpopular, inflammatory or offensive statement in order to avoid any discussion on the matter.",,0
+76,Cyberbullying,"The use of digital technologies with an intent to offend, humiliate, threaten, harass or abuse somebody.",,0
+77,TL;DR,Too Long; Didn't Read.,,0
+78,Terms and Conditions,"The rules which a user and a service provider agree to follow, outlining their rights and responsibilities.",,0

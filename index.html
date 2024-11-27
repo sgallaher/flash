@@ -1,0 +1,131 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+<header>
+  <h1>Terms</h1>
+
+  <h2>{{ session['lesson'] }} and trying to print {{ session['print'] }}</h2>
+  <form method='post' action='/' enctype='multipart/form-data' id="LessonForm">
+        
+        
+    <select name="lesson_id" id="lesson" class="select_user" placeholder="Select Lesson" onchange="document.getElementById('LessonForm').submit();">
+          {% for l in lessons %}
+          {% if session['lesson'] == l.lesson_id %}
+          <option value="{{l.lesson_id}}" selected autofocus>{{l.unit_id}} - {{l.number}} </option>
+          {% else %}
+          <option value="{{l.lesson_id}}">{{l.unit_id}} - {{l.number}}</option>
+          {% endif %}
+          {% endfor %}
+    </select>
+</header>
+<main>
+  <div>
+    <h2>Welcome to Flash Cards</h2>
+    {% if results %}
+    <div class="table-container">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Term</th>
+            <th>Definition</th>
+            <th></th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for result in results %}
+          <tr>
+            <td>{{ result.term.name }}</td>
+            <td>{{ result.term.definition }}</td>
+            <td><a href="?term={{result.term.term_id}}&card={{result.card_id}}"><i class="fa fa-trash-o" style="font-size:36px"></i></a></td>
+            <td>        <!-- Edit button with data attributes -->
+              <button type="button" 
+                      class="edit-btn" 
+                      onclick="openEditModal('{{ result.term.term_id }}', '{{ result.term.name }}', '{{ result.term.definition }}')">
+                Edit
+              </button></td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+
+
+
+    {% endif %}
+
+    <p>Current lesson: {{ session['lesson'] }}</p>
+    <form method="post" action="/" enctype="multipart/form-data" id="MakeForm" name="MakeForm">
+      <!-- Use input type="submit" with a dynamic value -->
+      <input type="submit" name="make_lesson" 
+             value="{{ session.get('lesson', 'Default Lesson') }}" 
+             class="confirm-btn" placeholder="Print Cards">
+ 
+    </form>
+
+    
+    <div id="editModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal-btn" onclick="closeEditModal()">&times;</span>
+        <h3>Edit Term</h3>
+        <form method="post" action="/" id="editTermForm">
+          <input type="hidden" name="term_id" id="editTermId">
+          <label for="editTermName">Term:</label>
+          <input type="text" name="term_name" id="editTermName" required>
+          <br>
+          <label for="editTermDefinition">Definition:</label>
+          <textarea name="term_definition" id="editTermDefinition" rows="4" required class="modal-textarea"></textarea>
+          <br>
+          <button type="submit" class="confirm-btn">Save Changes</button>
+        </form>
+      </div>
+    </div>
+
+    <!-- Add Button to Open Modal -->
+    <button class="open-modal-btn" onclick="openModal()">Add Terms and Definitions</button>
+
+    <!-- Modal for Adding Terms and Definitions -->
+    <div id="addModal" class="modal">
+      <div class="modal-content">
+        <span class="close-modal-btn" onclick="closeModal()">&times;</span>
+        <h3>Add Terms and Definitions</h3>
+        <form method="post" action="/" id="addTermsForm">
+          <textarea name="terms_definitions" rows="10" placeholder="Enter terms and definitions, one per line (e.g., Term: Definition)" required class="modal-textarea"></textarea>
+          <br>
+          <button type="submit" class="confirm-btn">Add to Database</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</main>
+<footer>
+  <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
+  
+</footer>
+</div>
+<script>
+  function openModal() {
+    document.getElementById('addModal').style.display = 'flex';
+  }
+
+  function closeModal() {
+    document.getElementById('addModal').style.display = 'none';
+  }
+
+  function openEditModal(termId, termName, termDefinition) {
+    // Populate the modal fields with the current term data
+    document.getElementById('editTermId').value = termId;
+    document.getElementById('editTermName').value = termName;
+    document.getElementById('editTermDefinition').value = termDefinition;
+
+    // Display the modal
+    document.getElementById('editModal').style.display = 'flex';
+  }
+
+  function closeEditModal() {
+    // Hide the modal
+    document.getElementById('editModal').style.display = 'none';
+  }
+</script>
+
+{% endblock %}

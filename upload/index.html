@@ -1,0 +1,333 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+<header>
+  <h1>Upload Page</h1>
+</header>
+<main>
+  <div>
+      <h2>It should be that only registered user can access this page.</h2>
+
+  <div class="spacer"></div>
+
+
+
+  <h2>Add a bunch of users</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 8 fields; 
+    userId, firstName, lastName, titleId, email, password, roleId, created</P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="usersFile" class="upload-label">Upload a csv file of users</label>
+    <input type='file' name='usersFile' class="select_user">
+    <input type='hidden' name='userf' value='userf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "users" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>email</th>
+    <th>roleId</th> 
+    <th>created</th>
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+      <td>{{row.email}}</td> 
+      <td>{{row.role_id}}</td> 
+      <td>{{row.created}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+
+
+  <h2>Add a Subject</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 3 fields; 
+    subjectId, name, sessionId (0)
+
+</P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="subjectsFile" class="upload-label">Upload a csv file of subjects</label>
+    <input type='file' name='subjectsFile' class="select_user">
+    <input type='hidden' name='subjectf' value='subjectf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "subjects" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Subject</th>
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+      <td>{{row.name}}</td> 
+      </tr>
+      {% endfor %}
+  </table>
+
+  {% endif %}
+
+
+  <h2>Add a Unit</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 7 fields; 
+    unitId, year, number, name, description, subjectId, sessionId
+</P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="unitsFile" class="upload-label">Upload a csv file of units</label>
+    <input type='file' name='unitsFile' class="select_user">
+    <input type='hidden' name='unitf' value='unitf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+  {% if uploaded.type == "units" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Subject id</th>
+    <th>Year</th> 
+    <th>Unit Number</th>
+    <th>Unit Name</th>
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.subject_id}}</td>
+          <td>{{row.year}}</td>
+          <td>{{row.number}}</td>
+          <td>{{row.name}}</td>
+      </tr>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+ 
+
+
+
+  <h2>Add a Role</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 3 fields ;role_id,
+    name,
+    description
+  </P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="rolesFile" class="upload-label">Upload a csv file of role</label>
+    <input type='file' name='rolesFile' class="select_user">
+    <input type='hidden' name='rolef' value='rolef'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "roles" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Role id</th>
+    <th>Name</th> 
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.role_id}}</td>
+          <td>{{row.name}}</td>
+
+      </tr>
+      </tr>
+      {% endfor %}
+  </table>
+
+
+
+  {% endif %}
+
+  <h2>Add a Year</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 2 fields ;year,
+    description
+  </P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="yearsFile" class="upload-label">Upload a csv file of years</label>
+    <input type='file' name='yearsFile' class="select_user">
+    <input type='hidden' name='yearf' value='yearf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "years" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Year</th>
+    <th>Description</th> 
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.year}}</td>
+          <td>{{row.description}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+
+
+
+
+  <h2>Add a Lesson</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 5 fields ;Lesson_id,
+    unit_id, number, name, session_id
+  </P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="lessonsFile" class="upload-label">Upload a csv file of lessons</label>
+    <input type='file' name='lessonsFile' class="select_user">
+    <input type='hidden' name='lessonf' value='lessonf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "lessonf" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Lesson Id</th>
+    <th>Unit Id</th> 
+    <th>Lesson Number</th>
+    <th>Lesson Name</th> 
+    <th>Session Id</th> 
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.lesson_id}}</td>
+          <td>{{row.unit_id}}</td>
+          <td>{{row.number}}</td>
+          <td>{{row.name}}</td>
+          <td>{{row.session_id}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+
+
+  <h2>Add a Term</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 5 fields ;term_id,
+    name, definition, image, session_id
+  </P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="termsFile" class="upload-label">Upload a csv file of terms</label>
+    <input type='file' name='termsFile' class="select_user">
+    <input type='hidden' name='termf' value='termf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "termf" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Term Id</th>
+    <th>Term</th> 
+    <th>Definition</th>
+    <th>Image</th> 
+    <th>Session Id</th> 
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.term_id}}</td>
+          <td>{{row.name}}</td>
+          <td>{{row.definition}}</td>
+          {% if row.image %}
+          <td><img src="data:image/png;base64,{{ row.image | b64encode | decode('utf-8') }}" alt="Term Image">
+      {% else %}
+          <p>No image available</p>
+      {% endif %}</td>
+          <td>{{row.session_id}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+
+
+
+  <h2>Add a Card</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 4 fields ;card_id,
+    term_id, lesson_id, session_id
+  </P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="cardsFile" class="upload-label">Upload a csv file of cards</label>
+    <input type='file' name='cardsFile' class="select_user">
+    <input type='hidden' name='cardf' value='cardf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "cardf" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Card Id</th>
+    <th>Term Id</th> 
+    <th>Lesson Id</th>
+    <th>Session Id</th> 
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.card_id}}</td>
+          <td>{{row.term_id}}</td>
+          <td>{{row.lesson_id}}</td>
+          <td>{{row.session_id}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+  
+  <h2>Add a Session</h2>
+  <P>Please note:  The file you upload must be text seperated by a comma, with 5 fields ;session_id,
+    user_id, created, duration, terminated
+  </P>
+  <form method='post' action='/upload' enctype='multipart/form-data'>
+    <label for="sessionsFile" class="upload-label">Upload a csv file of sessions</label>
+    <input type='file' name='sessionsFile' class="select_user">
+    <input type='hidden' name='sessionf' value='sessionf'>
+    <button type="submit" class="submit-btn">Upload</button>
+  </form>
+
+  {% if uploaded.type == "sessionf" %}
+  <p>You have uploaded {{ uploaded.records }} {{ uploaded.type}}</p>
+  <table>
+    <tr>
+    <th>Session Id</th>
+    <th>User Id</th> 
+    <th>Created</th>
+    <th>Duration</th>
+    <th>Terminated</th>  
+    </tr>
+      
+    {% for row in uploaded.data %}
+      <tr>
+        <tr>
+          <td>{{row.session_id}}</td>
+          <td>{{row.user_id}}</td>
+          <td>{{row.created}}</td>
+          <td>{{row.duration}}</td>
+          <td>{{row.terminated}}</td>
+      </tr>
+      {% endfor %}
+  </table>
+  {% endif %}
+
+
+  </div>
+
+</main>
+<footer>
+  <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
+  
+</footer>
+</div>
+
+{% endblock %}

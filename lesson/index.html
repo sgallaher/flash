@@ -1,0 +1,55 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+<header>
+  <h1>Cards for Lessons {{ lesson_id }}</h1>
+</header>
+<main>
+  <div>
+
+  <div class="spacer"></div>
+    {% if result %}
+    <ul>
+        {% for result in results %}
+            <li>
+                <strong>{{ result.term }}</strong>: {{ result.definition }}
+            </li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <P>Which Lesson?</P>
+    <form method='post' action='/lesson' enctype='multipart/form-data' id="LessonForm">
+        
+        
+        <select name="subject" id="subject" class="select_user" placeholder="Select Subject" onchange="document.getElementById('LessonForm').submit();">
+              {% for subject in subjects %}
+              <option value="{{subject.subject_id}}">{{subject.name}}</option>
+              {% endfor %}
+        </select>
+        <select name="year" id="year" class="select_user" placeholder="Select Year" onchange="document.getElementById('LessonForm').submit();">
+            {% for year in years %}
+            <option value="{{year.year}}">{{year.description}}</option>
+            {% endfor %}
+      </select>
+        <select name="unit" id="unit" class="select_user" placeholder="Select Unit" onchange="document.getElementById('LessonForm').submit();">
+            {% for unit in units %}
+            <option value="{{unit.unit_id}}">{{unit.unit_id}}-{{unit.name}}</option>
+            {% endfor %}
+      </select>
+      <select name="lesson" id="lesson" class="select_user" placeholder="Select Lesson" onchange="document.getElementById('LessonForm').submit();">
+        {% for unit in units %}
+          {% for lesson in lessons %}
+        <option value="{{lesson.lesson_id}}">{{unit.unit_id}} / {{lesson.number}} - {{lesson.lesson_id}}</option>
+        {% endfor %}
+        {% endfor %}
+  </select>
+</form>
+</main>
+<footer>
+  <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
+  
+</footer>
+</div>
+
+{% endblock %}

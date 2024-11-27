@@ -1,0 +1,258 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<script src="../static/js/script.js""></script>
+<div class="container">
+<header>
+  <h1>View the Data Sets</h1>
+</header>
+<main>
+  <div>
+      <p>It should be that only registered user can access this page.</p>
+
+  <div class="spacer"></div>
+
+<!-- Tab links -->
+<div class="tab">
+    <button class="tablinks" onclick="openTable(event, 'users')">Users</button>
+    <button class="tablinks" onclick="openTable(event, 'subjects')">Subjects</button>
+    <button class="tablinks" onclick="openTable(event, 'units')">Units</button>
+    <button class="tablinks" onclick="openTable(event, 'roles')">Roles</button>
+    <button class="tablinks" onclick="openTable(event, 'years')">Years</button>
+    <button class="tablinks" onclick="openTable(event, 'lessons')">Lessons</button>
+    <button class="tablinks" onclick="openTable(event, 'terms')">Terms</button>
+    <button class="tablinks" onclick="openTable(event, 'cards')">Cards</button>
+    <button class="tablinks" onclick="openTable(event, 'sessions')">Sessions</button>
+  </div>
+  
+  <!-- Tab content -->
+  <div id="users" class="tabcontent">
+    <h3>Users</h3>
+    <table> 
+        <tr>
+            <th>Title</th>
+            <th>First Name</th>
+            <th>Last Name</th>
+            <th>Email</th>
+            <th>Role</th>
+        </tr>
+        {% for user in allusers %}
+        <tr>
+            <td>{{user.title_id}}</td>
+            <td>{{user.first_name}}</td>
+            <td>{{user.last_name}}</td>
+            <td>{{user.email}}</td>
+            <td>{{user.role.name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <!-- Add a new single user-->
+    <p>Add a single user</p>
+
+    <form method='post' id="useri-form" action='/upload' enctype='multipart/form-data'>
+      <label for="title" class="upload-label">Title</label>
+      <select name='title' id="title" class="select_user" autocomplete="off">
+        <option value="" disabled selected>Select Title</option>
+        <option value="Dr">Dr</option>
+        <option value="Miss">Miss</option>
+        <option value="Mr">Mr</option>
+        <option value="Mrs">Mrs</option>
+        <option value="Ms">Ms}</option>
+      </select>
+      <input type='text' placeholder="First Name" name="first_name" required class="select_user" autocomplete="off">
+      <input type='text' placeholder="Last Name" name='last_name' class="select_user" autocomplete="off">
+      <input type='email' placeholder="Email" name='email' class="select_user" autocomplete="off" required>
+      <input type='password' placeholder="Password" name='password1' class="select_user" autocomplete="off">
+      <input type='password'  placeholder="Confirm password" name='password2' class="select_user" autocomplete="off">
+      <select name="role_id" id="role_id" class="select_user" autocomplete="off">
+        <option value="" disabled selected>Select a role</option>
+        {% for role in allroles %}
+        <option value="{{role.role_id}}">{{role.name}}</option>
+        {% endfor %}
+      </select>
+      <input type='hidden' name='useri' value='useri'>
+      <button type="submit" class="submit-btn">Upload</button>
+    </form>
+  </div>
+  
+  <div id="subjects" class="tabcontent">
+    <h3>Subjects</h3>
+    <table> 
+        <tr>
+            <th>Subject</th>
+        </tr>
+        {% for subject in subjects %}
+        <tr>
+            <td>{{subject.name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+  
+  <div id="units" class="tabcontent">
+    <h3>Units</h3>
+    <table> 
+        <tr>
+            <th>Subject</th>
+            <th>Year</th>
+            <th>Unit Number</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        {% for unit in allunits %}
+        <tr>
+            <td>{{unit.subject.name}}</td>
+            <td>{{unit.year}}</td>
+            <td>{{unit.number}}</td>
+            <td>{{unit.name}}</td>
+            <td>{{unit.description}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+
+
+  <div id="roles" class="tabcontent">
+    <h3>Roles</h3>
+    <table> 
+        <tr>
+            <th>Role Id</th>
+            <th>Role Name</th>
+        </tr>
+        {% for role in allroles %}
+        <tr>
+            <td>{{role.role_id}}</td>
+            <td>{{role.name}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+
+  <div id="years" class="tabcontent">
+    <h3>Years</h3>
+    <table> 
+        <tr>
+            <th>Year</th>
+            <th>Description</th>
+        </tr>
+        {% for year in allyears %}
+        <tr>
+            <td>{{year.year}}</td>
+            <td>{{year.description}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+
+  <div id="lessons" class="tabcontent">
+    <h3>Lessons</h3>
+    <table> 
+        <tr>
+            <th>Lesson Id</th>
+            <th>Unit Id</th>
+            <th>Lesson Number</th>
+            <th>Lesson Name</th>
+            <th>Session Id</th>
+
+        </tr>
+        {% for lesson in alllessons %}
+        <tr>
+            <td>{{lesson.lesson_id}}</td>
+            <td>{{lesson.unit_id}}</td>
+            <td>{{lesson.number}}</td>
+            <td>{{lesson.name}}</td>
+            <td>{{lesson.session_id}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+
+
+  <div id="terms" class="tabcontent">
+    <h3>Terms</h3>
+    <table> 
+        <tr>
+            <th>Term Id</th>
+            <th>Term</th>
+            <th>Definitionr</th>
+            <th>Image</th>
+            <th>Session Id</th>
+
+        </tr>
+        {% for term in allterms %}
+        <tr>
+            <td>{{term.term_id}}</td>
+            <td>{{term.name}}</td>
+            <td>{{term.definition}}</td>
+            <td>
+              <!-- 
+              {% if term.image %}
+                <img src="data:image/png;base64,{{ term.image | b64encode | decode('utf-8') }}" alt="Term Image">
+              {% else %}
+                <p>No image available</p>
+              {% endif %}-->
+            </td>
+            <td>{{term.session_id}}</td>
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+
+
+  <div id="cards" class="tabcontent">
+    <h3>Cards</h3>
+    <table> 
+        <tr>
+            <th>Card Id</th>
+            <th>Term</th>
+            <th>Unit Number</th>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+        {% for card in allcards %}
+        <tr>
+            <td>{{card.card_id}}</td>
+            <td>{{card.term.name}}</td>
+            <td>{{card.lesson_id}}</td>
+            <td>{{card.session_id}}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+
+
+
+  <div id="sessions" class="tabcontent">
+    <h3>Sessions</h3>
+    <table> 
+        <tr>
+            <th>Session Id</th>
+            <th>User</th>
+            <th>Created</th>
+            <th>Duration</th>
+            <th>Terminated</th>
+        </tr>
+        {% for session in allsessions %}
+        <tr>
+            <td>{{session.session_id}}</td>
+            <td>{{session.user.user_id}}</td>
+            <td>{{session.created}}</td>
+            <td>{{session.duration}}</td>
+            <td>{{session.terminated}}</td>
+
+        </tr>
+        {% endfor %}
+    </table>
+  </div>
+ 
+</main>
+<footer>
+  <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
+  
+</footer>
+</div>
+
+
+{% endblock %}
