@@ -1,0 +1,10 @@
+Flask==2.3.3
+Flask-Bcrypt==1.0.1
+Flask-SQLAlchemy==3.0.5
+SQLAlchemy==2.0.21
+Flask-WTF==1.1.1
+WTForms==3.0.1
+pandas==2.1.1
+gunicorn==21.2.0
+python-dotenv==1.0.0  # For environment variable management
+reportlab==4.0.2  # For PDF generation
