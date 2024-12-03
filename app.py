@@ -276,3 +276,9 @@ def index():
     
 
     return render_template("/index.html", results=query, lessons=lessons)
+@app.route("/viewdb")
+def viewdb():
+    return render_html("/viewdb/index.html")
+@app.route("/login")
+def login():
+    return render_html("/login/index.html")
