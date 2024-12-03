@@ -173,7 +173,7 @@ def index():
         #set lesson to the lesson session
         try:
             session['lesson']=int(request.form.get('lesson_id'))
-            session['title']=str(query.unit.year)+"-"+str(query.unit.number)+" "+str(query.lesson.number)
+            session['title']=str(query.unit.year)+"-"+str(query.unit.number)+"."+str(query.lesson.number)
             make_lesson=int(request.form.get('make_lesson'))
             session['print']=make_lesson
 
