@@ -126,11 +126,20 @@ def index():
     '''----- check the session variables.  If they aren't there, make them ------'''
     if "lesson" not in session:
         session["lesson"]=None
-        session["title"]=None
+        
     if "print" not in session:
         session["print"]=None
+    if "title" not in session:
+        session["title"]=None
+
+    titles = db.session.query(TblLessons, TblUnits).join(TblUnits).filter(TblLessons.lesson_id == session["lesson"]).first()
+    if titles:
+            lesson, unit = titles
+            session['title']= f"{unit.year}.{unit.number} Lesson {lesson.number}"
     
     ''' -----load the cards from db ----------'''
+
+
     query = db.session.query(TblCards).join(TblTerms).join(TblLessons).join(TblUnits).filter(TblLessons.lesson_id == session["lesson"]).all()
 
     ''' -----load the years / units / lessons  from db ----------'''
@@ -169,16 +178,35 @@ def index():
     
     '''----- check if the session variables have changed in a post ------'''
     if request.method == 'POST':
+
+        
         '''----- check if the session variables have changed in a post ------'''
         #set lesson to the lesson session
         try:
             session['lesson']=int(request.form.get('lesson_id'))
-            session['title']=str(query.unit.year)+"-"+str(query.unit.number)+"."+str(query.lesson.number)
-            make_lesson=int(request.form.get('make_lesson'))
-            session['print']=make_lesson
-
         except:
             pass
+        try:
+            make_lesson=request.form.get('make_lesson')
+            if make_lesson:
+
+                session['print']=session["lesson"]
+                # Query the database to get the cards related to this lesson
+                query = db.session.query(TblCards).join(TblTerms).join(TblLessons).join(TblUnits).filter(TblLessons.lesson_id == session["print"]).all()
+                
+                # Create the cards list (extract terms and definitions)
+                cards = [(card.term.name, card.term.definition) for card in query]
+
+
+                # Generate the PDF with the cards data
+                pdf = generate_pdf(cards)
+                dl=f'flashcards-{session['title']}.pdf'
+                session['print']=None
+
+                return send_file(pdf, as_attachment=True, download_name=dl, mimetype='application/pdf')
+        except:
+            pass
+
         try:
             term_id = request.form.get('term_id')
             term_name = request.form.get('term_name')
@@ -237,20 +265,8 @@ def index():
         
 
     
-    if session['print']:
-        # Query the database to get the cards related to this lesson
-        query = db.session.query(TblCards).join(TblTerms).join(TblLessons).join(TblUnits).filter(TblLessons.lesson_id == session["print"]).all()
-        
-        # Create the cards list (extract terms and definitions)
-        cards = [(card.term.name, card.term.definition) for card in query]
+    #if session['print']:
 
-
-        # Generate the PDF with the cards data
-        pdf = generate_pdf(cards)
-        dl=f'flashcardsLesson{session['print']}.pdf'
-        session['print']=None
-
-        return send_file(pdf, as_attachment=True, download_name=dl, mimetype='application/pdf')
 
 
 
@@ -260,9 +276,3 @@ def index():
     
 
     return render_template("/index.html", results=query, lessons=lessons)
-
-
-
-
-
-
