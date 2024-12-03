@@ -58,11 +58,11 @@
 
     {% endif %}
 
-    <p>Current lesson: {{ session['lesson'] }}</p>
+    <p>Current lesson: {{ session['title'] }}</p>
     <form method="post" action="/" enctype="multipart/form-data" id="MakeForm" name="MakeForm">
       <!-- Use input type="submit" with a dynamic value -->
       <input type="submit" name="make_lesson" 
-             value="{{ session.get('lesson', 'Default Lesson') }}" 
+             value="Make Lesson" 
              class="confirm-btn" placeholder="Print Cards">
  
     </form>
