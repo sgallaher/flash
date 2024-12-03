@@ -5,7 +5,12 @@
 <header>
   <h1>Terms</h1>
 
-  <h2>{{ session['lesson'] }} and trying to print {{ session['print'] }}</h2>
+  <h2>{% if session['title'] %}
+        {{ session['title'] }} 
+      {% else %}
+        Select a Unit
+      {% endif %}
+  </h2>
   <form method='post' action='/' enctype='multipart/form-data' id="LessonForm">
         
         
@@ -21,7 +26,6 @@
 </header>
 <main>
   <div>
-    <h2>Welcome to Flash Cards</h2>
     {% if results %}
     <div class="table-container">
       <table class="styled-table">
