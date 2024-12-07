@@ -30,19 +30,14 @@
     <h3>Users</h3>
     <table> 
         <tr>
-            <th>Title</th>
-            <th>First Name</th>
-            <th>Last Name</th>
             <th>Email</th>
             <th>Role</th>
         </tr>
         {% for user in allusers %}
         <tr>
-            <td>{{user.title_id}}</td>
-            <td>{{user.first_name}}</td>
-            <td>{{user.last_name}}</td>
+
             <td>{{user.email}}</td>
-            <td>{{user.role.name}}</td>
+            <td>{{user.role_id}}</td>
         </tr>
         {% endfor %}
     </table>
@@ -54,12 +49,10 @@
       <label for="title" class="upload-label">Title</label>
       <select name='title' id="title" class="select_user" autocomplete="off">
         <option value="" disabled selected>Select Title</option>
-        <option value="Dr">Dr</option>
-        <option value="Miss">Miss</option>
-        <option value="Mr">Mr</option>
-        <option value="Mrs">Mrs</option>
-        <option value="Ms">Ms}</option>
-      </select>
+          {% for title in titles %}
+          <option value="{{ title.title }}">{{ title.title }}</option>
+          {% endfor %}
+        </select>
       <input type='text' placeholder="First Name" name="first_name" required class="select_user" autocomplete="off">
       <input type='text' placeholder="Last Name" name='last_name' class="select_user" autocomplete="off">
       <input type='email' placeholder="Email" name='email' class="select_user" autocomplete="off" required>
@@ -92,24 +85,43 @@
   
   <div id="units" class="tabcontent">
     <h3>Units</h3>
-    <table> 
-        <tr>
-            <th>Subject</th>
+    <div class="table-container">
+      <table>
+<!--
+ unit_id = db.Column(db.String(10), primary_key=True)
+    year = db.Column(db.Integer, nullable=False)
+    number = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(128), nullable=True)
+    description = db.Column(db.String(64), nullable=True)
+    subject_id = db.Column(db.Integer, db.ForeignKey('tbl_subjects.subject_id'), nullable=False)
+    session_id = db.Column(db.Integer, db.ForeignKey('tbl_sessions.session_id'), nullable=True)        
+-->
+        <thead>
+          <tr>
+            <th>Unit Id</th>
             <th>Year</th>
-            <th>Unit Number</th>
+            <th>Number</th>
             <th>Name</th>
             <th>Description</th>
-        </tr>
-        {% for unit in allunits %}
-        <tr>
-            <td>{{unit.subject.name}}</td>
-            <td>{{unit.year}}</td>
-            <td>{{unit.number}}</td>
-            <td>{{unit.name}}</td>
-            <td>{{unit.description}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+            <th>Subject Id</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for unit in units %}
+          <tr>
+            <td>{{ unit.unit_id }}</td>
+            <td>{{ unit.year }}</td>
+            <td>{{ unit.number }}</td>
+            <td>{{ unit.name }}</td>
+            <td>{{ unit.description }}</td>
+            <td>{{ unit.subject_id }}</td>
+            <td><a href="edit?unit={{unit.unit_id}}&delete=true"><i class="fa fa-trash-o" style="font-size:36px"></i></a></td>
+            <td><a href="edit?unit={{unit.unit_id}}">Edit</a>
+            </td></tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </div>
 
 
@@ -147,25 +159,39 @@
 
   <div id="lessons" class="tabcontent">
     <h3>Lessons</h3>
-    <table> 
-        <tr>
-            <th>Lesson Id</th>
-            <th>Unit Id</th>
-            <th>Lesson Number</th>
-            <th>Lesson Name</th>
-            <th>Session Id</th>
+    <table>
+      <!--
+    lesson_id = db.Column(db.Integer, primary_key=True)
+    unit_id = db.Column(db.String(10), db.ForeignKey('tbl_units.unit_id'), nullable=False)
+    number = db.Column(db.Integer, nullable=False)
+    name = db.Column(db.String(64), nullable=True)
+    session_id = db.Column(db.Integer, db.ForeignKey('tbl_sessions.session_id'), nullable=False)
 
-        </tr>
-        {% for lesson in alllessons %}
-        <tr>
-            <td>{{lesson.lesson_id}}</td>
-            <td>{{lesson.unit_id}}</td>
-            <td>{{lesson.number}}</td>
-            <td>{{lesson.name}}</td>
-            <td>{{lesson.session_id}}</td>
-        </tr>
-        {% endfor %}
-    </table>
+    session = db.relationship('TblSessions', backref='lessons')
+    unit = db.relationship('TblUnits', backref='lessons')       
+      -->
+              <thead>
+                <tr>
+                  <th>Lesson Id</th>
+                  <th>Unit</th>
+                  <th>Number</th>
+                  <th>Name</th>
+                </tr>
+              </thead>
+              <tbody>
+                {% for lesson in lessons %}
+                <tr>
+                  <td>{{ lesson.lesson_id }}</td>
+                  <td>{{ lesson.unit_id }}</td>
+                  <td>{{ lesson.number }}</td>
+                  <td>{{ lesson.name }}</td>
+
+                  <td><a href="edit?lesson={{lesson.lesson_id}}&delete=true"><i class="fa fa-trash-o" style="font-size:36px"></i></a></td>
+                  <td><a href="edit?lesson={{lesson.lesson_id}}">Edit</a>
+                  </td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
   </div>
 
 

@@ -1,17 +1,19 @@
 from io import TextIOWrapper
-import csv, re, io
-from flask import Flask, request, render_template, redirect, send_file, session, url_for
+import csv, re
+from flask import Flask, request, render_template, redirect, send_file, session, url_for, flash
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-from reportlab.lib.pagesizes import A4
-from reportlab.lib.units import mm
-from reportlab.platypus import Paragraph
-from reportlab.pdfgen import canvas
-from reportlab.lib.styles import getSampleStyleSheet
-from models import TblTerms, TblLessons, TblUnits, TblCards, db
+
+from models import TblTerms, TblLessons, TblUnits, TblCards, TblUsers,TblTitles, TblRoles,db
+from cards import *
+import cards
+from itsdangerous import URLSafeTimedSerializer
+import smtplib  # Or use a library like Flask-Mail
+
 
 app = Flask(__name__)
-app.secret_key = 'refhtrrv65eccTdF'  # Set secret key first
+app.secret_key = 'your_secret_key'
+serializer = URLSafeTimedSerializer(app.secret_key)
 bcrypt = Bcrypt(app)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///flashcards.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -20,90 +22,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 # Initialize the database
 db.init_app(app)
 
-''' -------------Code for the generation of the PDF Cards -----------'''
-
-# Adjusted card dimensions for 4 rows x 2 columns layout
-CARD_WIDTH = 90 * mm  # Slightly wider
-CARD_HEIGHT = 55 * mm  # Adjusted height for 8 cards per page
-
-# A4 dimensions
-A4_WIDTH, A4_HEIGHT = A4
-
-def generate_pdf(cards):
-
-    '''Check if this is being calleld'''
-
-    packet = io.BytesIO()
-    c = canvas.Canvas(packet, pagesize=A4)
-
-    # Margins and spacings
-    margin_top = 15 * mm
-    margin_left = 10 * mm
-    gap_between_rows = 5 * mm
-    gap_between_columns = 10 * mm
-
-    # Calculate positions for 8 cards (4 rows x 2 columns)
-    positions = [
-        (margin_left + (col * (CARD_WIDTH + gap_between_columns)),
-         A4_HEIGHT - margin_top - (row * (CARD_HEIGHT + gap_between_rows)) - CARD_HEIGHT)
-        for row in range(4)
-        for col in range(2)
-    ]
-
-    # Style for wrapped text
-    styles = getSampleStyleSheet()
-    style = styles["Normal"]
-    style.fontSize = 12
-    style.leading = 14  # Line spacing
-    style.alignment=1
-  
-
-
-
-    # Split cards into front and back pages
-    num_pages = (len(cards) + 7) // 8  # 8 cards per page
-    for page in range(num_pages):
-        # Front side (terms)
-        style.fontSize = 20
-        for i in range(8):
-            index = page * 8 + i
-            if index >= len(cards):
-                continue
-            term, _ = cards[index]
-            x, y = positions[i]
-            draw_wrapped_text(c, term, x, y, CARD_WIDTH, style)
-
-        c.showPage()
-
-        # Back side (definitions)
-        style.fontSize = 10
-        style.alignment=0
-        for i in range(8):
-            index = page * 8 + i
-            if index >= len(cards):
-                continue
-            _, definition = cards[index]
-            # Flip horizontal alignment for back side
-            x, y = positions[i]
-            x = A4_WIDTH - x - CARD_WIDTH
-            draw_wrapped_text(c, definition, x, y, CARD_WIDTH, style)
-
-        c.showPage()
-
-    c.save()
-    packet.seek(0)
-    return packet
-
-def draw_wrapped_text(c, text, x, y, width, style):
-    """Draw vertically and horizontally centered wrapped text using a Paragraph."""
-    para = Paragraph(text, style)
-    from reportlab.platypus.frames import Frame
-
-    # Create a frame for the text and render it on the canvas
-    frame = Frame(x, y, width, CARD_HEIGHT, showBoundary=1)
-    frame.addFromList([para], c)
-
-''' -------------- End generation of PDF Card code --------------------'''
 
     
 def validate_input(input_str):
@@ -111,11 +29,23 @@ def validate_input(input_str):
         raise ValueError("Potential SQL injection attempt detected")
     return input_str
 
+
+
+def hash_password(plaintext_password):
+    return bcrypt.generate_password_hash(plaintext_password).decode('utf-8')
+
+# Function to check a password against a hash
+def check_password(plaintext_password, hashed_password):
+    return bcrypt.check_password_hash(hashed_password, plaintext_password)
+
+
 '''build the database if it is isn't there yet.'''
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()  # Ensures tables are created
     app.run(debug=True)
+
+
 
 
 ''' ---------------------------The "main" -------------------------'''
@@ -265,20 +195,119 @@ def index():
         
 
     
-    #if session['print']:
-
-
-
-
-
-        
-
-    
 
     return render_template("/index.html", results=query, lessons=lessons)
+
 @app.route("/viewdb")
 def viewdb():
-    return render_template("/viewdb/index.html")
-@app.route("/login")
+    allusers = db.session.query(TblUsers.email,TblUsers.role_id).join(TblRoles).all()
+    titles = TblTitles.query.all()
+    roles = TblRoles.query.all()
+    units = TblUnits.query.all()
+    lessons = TblLessons.query.all()
+    return render_template("/viewdb/index.html", allusers=allusers, titles=titles, units=units, lessons=lessons)
+
+
+@app.route("/login", methods=['POST', 'GET'])
 def login():
-    return render_template("/login/index.html")
+    
+    message = "Sign In"
+    if "user" not in session:
+        session["user"] = None
+    if "attempts" not in session:
+        session["attempts"] = 0
+    #for testing purpose, set the attempts to 0, no matter what!
+    session['attempts']=0
+
+    if request.method == 'POST':
+        # Get the email and plain text password
+        username = request.form.get('user')
+        pw = request.form.get('password')
+
+        # Query database to find the user
+        user = db.session.query(TblUsers.email, TblUsers.password).filter(TblUsers.email == username).first()
+
+        if user and session['attempts'] < 3:
+            # Check the password using Flask-Bcrypt
+            if check_password(pw, user.password):
+                session['user'] = username
+                session['attempts'] = 0
+                return redirect("/")
+            else:
+                session['attempts'] += 1
+                message = "Email or Password is incorrect. Please try again."
+        else:
+            if session['attempts'] >= 3:
+                message = "Too many failed attempts. Please try again later."
+    
+    return render_template("login/index.html", message=message)
+
+
+
+@app.route("/register", methods=['GET', 'POST'])
+def register():
+    if request.method == 'POST':
+        # Retrieve form data
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        title = request.form.get('title')
+        email = request.form.get('email')
+        password = request.form.get('password')
+        question = request.form.get('question')
+        answer = request.form.get('answer')
+        role_id = request.form.get('role_id')
+
+        # Generate user_id based on the email prefix
+        user_id = email.split('@')[0]
+
+        # Validate that all required fields are filled
+        if not all([first_name, last_name, email, password, role_id]):
+            message = "All fields are required."
+            return render_template('register.html', message=message)
+
+        # Check if the email is already registered
+        existing_user = TblUsers.query.filter_by(email=email).first()
+        if existing_user:
+            message = "Email is already registered. Please log in or use a different email."
+            return render_template('register/index.html', message=message)
+
+        # Hash the password
+        hashed_password = hash_password(password)
+        hashed_answer = hash_password(answer)
+        print(hashed_password)
+
+        # Create the new user
+        new_user = TblUsers(
+            user_id=user_id,
+            first_name=first_name,
+            last_name=last_name,
+            title_id=title,
+            email=email,
+            password=hashed_password,
+            question=question,
+            answer=hashed_answer,
+            role_id=int(role_id),
+            created=int(datetime.utcnow().timestamp())
+        )
+        print(new_user)
+
+        # Save the user to the database
+        db.session.add(new_user)
+        db.session.commit()
+
+        # Redirect to the login page or show success message
+        message = "Account created successfully! You can now log in."
+        return redirect('/')
+
+    # Render the registration form
+    titles = TblTitles.query.all()
+    roles = TblRoles.query.all()
+    return render_template('register/index.html', titles=titles, roles=roles)
+    
+
+@app.route("/logout", )
+def logout():
+    session.clear()
+    return redirect("/")
+
+

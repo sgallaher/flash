@@ -1,0 +1,202 @@
+{% extends "layout.html" %}
+
+{% block body %}
+<div class="container">
+  <header>
+    <h1>Register</h1>
+  </header>
+  <main>
+    <div class="register-container">
+      {% if error %}
+      <div class="error-message">{{ error }}</div>
+      {% endif %}
+      <form method="post" action="/register" id="registerForm">
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="first_name">First Name:</label>
+            <input type="text" name="first_name" id="first_name" placeholder="First Name" required>
+          </div>
+          <div class="form-group half-width">
+            <label for="last_name">Last Name:</label>
+            <input type="text" name="last_name" id="last_name" placeholder="Last Name" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group half-width">
+            <label for="title">Title:</label>
+            <select name="title" id="title_id" required>
+              <option value="" disabled selected>Select Title</option>
+              {% for title in titles %}
+              <option value="{{ title.title }}">{{ title.title }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="form-group half-width">
+            <label for="role_id">Role:</label>
+            <select name="role_id" id="role_id" required>
+              <option value="" disabled selected>Select Role</option>
+              {% for role in roles %}
+              <option value="{{ role.role_id }}">{{ role.name }}</option>
+              {% endfor %}
+            </select>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label for="email">Email:</label>
+            <input type="email" name="email" id="email" placeholder="Enter your email" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label for="password">Password:</label>
+            <input type="password" name="password" id="password" placeholder="Enter your password" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="form-group full-width">
+            <label for="confirm_password">Confirm Password:</label>
+            <input type="password" name="confirm_password" id="confirm_password" placeholder="Confirm your password" required>
+          </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group full-width">
+              <label for="security-question">Security Question</label>
+              <select id="security-question" name="question" required>
+                <option value="" disabled selected>Select your question</option>
+                <option value="first_pet">What was the name of your first pet?</option>
+                <option value="first_car">What was the first car you owned?</option>
+                <option value="mother_maiden_name">What is your mother’s maiden name?</option>
+                <option value="birth_city">What is the name of the city where you were born?</option>
+                <option value="favorite_teacher">What is the name of your favorite teacher or professor?</option>
+                <option value="favorite_book">What was the title of your favorite childhood book?</option>
+                <option value="childhood_dream_job">What was your dream job as a child?</option>
+                <option value="childhood_best_friend">What is the name of your best friend from childhood?</option>
+                <option value="favorite_food">What is your favorite food or dish?</option>
+                <option value="street_grew_up">What is the name of the street where you grew up?</option>
+              </select>            
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group full-width">
+              <label for="answer">Answer:</label>
+              <input type="text" name="answer" id="answer" placeholder="Provide your answer" required>
+            </div>
+          </div>
+
+
+        <div class="form-row">
+          <button type="submit" class="confirm-btn">Register</button>
+        </div>
+        <p>Already have an account? <a href="/login">Login here</a></p>
+      </form>
+    </div>
+  </main>
+  <footer>
+    <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
+  </footer>
+</div>
+
+<style>
+  .register-container {
+    max-width: 500px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
+
+  .form-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 15px;
+  }
+
+  .form-group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+  }
+
+  .form-group label {
+    font-weight: bold;
+    margin-bottom: 5px;
+  }
+
+  .form-group input,
+  .form-group select {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+  }
+
+  .half-width {
+    flex: 0 0 48%;
+  }
+
+  .full-width {
+    flex: 0 0 100%;
+  }
+
+  .confirm-btn {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .confirm-btn:hover {
+    background-color: #45a049;
+  }
+
+  .error-message {
+    color: red;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  p {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  p a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+
+  p a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  document.getElementById('registerForm').addEventListener('submit', function(event) {
+    const password = document.getElementById('password').value.trim();
+    const confirmPassword = document.getElementById('confirm_password').value.trim();
+
+    // Password validation regex
+    const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\W).{8,}$/;
+
+    if (!passwordRegex.test(password)) {
+      alert("Password must be at least 8 characters long, contain mixed case letters, and include at least one special character.");
+      event.preventDefault(); // Prevent form submission
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      alert("Passwords do not match.");
+      event.preventDefault(); // Prevent form submission
+    }
+  });
+</script>
+{% endblock %}

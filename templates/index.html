@@ -28,13 +28,14 @@
   <div>
     {% if results %}
     <div class="table-container">
-      <table class="styled-table">
+      <table class="styled-table {% if not session['user'] %} hide-cols{% endif %}">
+
         <thead>
           <tr>
             <th>Term</th>
             <th>Definition</th>
-            <th></th>
-            <th></th>
+            <th class="col-3"></th>
+            <th class="col-4"></th>
           </tr>
         </thead>
         <tbody>
@@ -42,8 +43,8 @@
           <tr>
             <td>{{ result.term.name }}</td>
             <td>{{ result.term.definition }}</td>
-            <td><a href="?term={{result.term.term_id}}&card={{result.card_id}}"><i class="fa fa-trash-o" style="font-size:36px"></i></a></td>
-            <td>        <!-- Edit button with data attributes -->
+            <td class="col-3"><a href="?term={{result.term.term_id}}&card={{result.card_id}}"><i class="fa fa-trash-o" style="font-size:36px"></i></a></td>
+            <td class="col-4">       <!-- Edit button with data attributes -->
               <button type="button" 
                       class="edit-btn" 
                       onclick="openEditModal('{{ result.term.term_id }}', '{{ result.term.name }}', '{{ result.term.definition }}')">
@@ -62,7 +63,7 @@
     <form method="post" action="/" enctype="multipart/form-data" id="MakeForm" name="MakeForm">
       <!-- Use input type="submit" with a dynamic value -->
       <input type="submit" name="make_lesson" 
-             value="Make Cards" 
+             value="Make Lesson" 
              class="confirm-btn" placeholder="Print Cards">
  
     </form>
@@ -83,8 +84,9 @@
           <button type="submit" class="confirm-btn">Save Changes</button>
         </form>
       </div>
+      
     </div>
-
+    {% if session['user'] %}
     <!-- Add Button to Open Modal -->
     <button class="open-modal-btn" onclick="openModal()">Add Terms and Definitions</button>
 
@@ -100,6 +102,7 @@
         </form>
       </div>
     </div>
+    {% endif %}
   </div>
 </main>
 <footer>

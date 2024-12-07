@@ -81,6 +81,8 @@ class TblUsers(db.Model):
     title_id = db.Column(db.String(4), nullable=True)
     email = db.Column(db.String(128), nullable=False, unique=True)
     password = db.Column(db.String(255), nullable=False)
+    question = db.Column(db.String(255), nullable=False)
+    answer = db.Column(db.String(255), nullable=False)
     role_id = db.Column(db.Integer, db.ForeignKey('tbl_roles.role_id'), nullable=False)
     created = db.Column(db.Integer, nullable=False)
 

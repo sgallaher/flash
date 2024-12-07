@@ -1,22 +1,107 @@
 {% extends "layout.html" %}
 
 {% block body %}
-<script src="../static/js/script.js""></script>
 <div class="container">
-<header>
-  <h1>View the Data Sets</h1>
-</header>
-<main>
-  <div>
-<h2>This doesn't exist yet</h2>
-  </div>
- 
-</main>
-<footer>
-  <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
-  
-</footer>
+  <header>
+    <h1>Login</h1>
+  </header>
+  <main>
+    <div class="login-container">
+      <form method="post" action="/login" id="loginForm">
+        <div class="form-group">
+          {% if message %}
+          {{ message }}
+          {% endif %}
+        </div>
+        <div class="form-group">
+          <label for="email">Email:</label>
+          <input type="email" name="user" id="email" placeholder="Enter your email" required>
+        </div>
+        <div class="form-group">
+          <label for="password">Password:</label>
+          <input type="password" name="password" id="password" placeholder="Enter your password" required>
+        </div>
+        <div class="form-group">
+          <button type="submit" class="confirm-btn">Login</button>
+        </div>
+        <p><a href="/reset">Forgot Password?</a></p>
+        <p>Don't have an account? <a href="/register">Register here</a></p>
+      </form>
+    </div>
+  </main>
+  <footer>
+    <div><p>Learning with Flask &copy 2024 Mr Gallaher</p></div>
+  </footer>
 </div>
 
+<style>
+  .login-container {
+    max-width: 400px;
+    margin: 50px auto;
+    padding: 20px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: #f9f9f9;
+  }
 
+  .form-group {
+    margin-bottom: 15px;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .form-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+  }
+
+  .form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    cursor: pointer;
+  }
+
+  .form-group button:hover {
+    background-color: #45a049;
+  }
+
+  p {
+    text-align: center;
+    margin-top: 10px;
+  }
+
+  p a {
+    color: #4CAF50;
+    text-decoration: none;
+  }
+
+  p a:hover {
+    text-decoration: underline;
+  }
+</style>
+
+<script>
+  document.getElementById('loginForm').addEventListener('submit', function(event) {
+    const email = document.getElementById('email').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (!email || !password) {
+      alert("Please fill in all fields.");
+      event.preventDefault(); // Prevent form submission
+    }
+  });
+</script>
 {% endblock %}
