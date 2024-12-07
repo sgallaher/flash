@@ -141,9 +141,9 @@ def index():
             term_id = request.form.get('term_id')
             term_name = request.form.get('term_name')
             term_definition = request.form.get('term_definition')
-            print(term_name,term_definition)
+            
             if term_id and term_name and term_definition:
-                print(term_id)
+                
                 # Fetch the term from the database
                 term = TblTerms.query.get(term_id)
                 if term:
@@ -154,7 +154,7 @@ def index():
                     return redirect('/')
             
                 else:
-                    print("Term not found.", "error")
+                    pass
             else:
                 
                 print("All fields are required.", "error")
@@ -173,15 +173,15 @@ def index():
             for line in terms_definitions.splitlines():
                 if ':' in line:  # Ensure format is "Term: Definition"
                     term, definition = map(str.strip, line.split(':', 1))
-                    print("Split worked")
+                    
                     nextId = db.session.query(TblTerms).order_by(TblTerms.term_id.desc()).first()
-                    print(f"Next term_id is {nextId.term_id+1}")
+                
                     new_term = TblTerms(term_id=nextId.term_id+1, name=term, definition=definition, session_id=0)
                     db.session.add(new_term)
-                    print(f"added {new_term}")
+                   
 
                     nextCardId = db.session.query(TblCards).order_by(TblCards.card_id.desc()).first()
-                    print(f"Next card_id is {nextCardId.card_id+1}")
+                    
                     new_card = TblCards(card_id=nextCardId.card_id+1, term_id=nextId.term_id+1, lesson_id=session["lesson"], session_id=0)
                     db.session.add(new_card)
             
@@ -216,8 +216,7 @@ def login():
         session["user"] = None
     if "attempts" not in session:
         session["attempts"] = 0
-    #for testing purpose, set the attempts to 0, no matter what!
-    session['attempts']=0
+
 
     if request.method == 'POST':
         # Get the email and plain text password
@@ -274,7 +273,7 @@ def register():
         # Hash the password
         hashed_password = hash_password(password)
         hashed_answer = hash_password(answer)
-        print(hashed_password)
+        
 
         # Create the new user
         new_user = TblUsers(
@@ -289,7 +288,7 @@ def register():
             role_id=int(role_id),
             created=int(datetime.utcnow().timestamp())
         )
-        print(new_user)
+        
 
         # Save the user to the database
         db.session.add(new_user)
