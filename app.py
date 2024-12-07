@@ -8,7 +8,7 @@ from models import TblTerms, TblLessons, TblUnits, TblCards, TblUsers,TblTitles,
 from cards import *
 import cards
 from itsdangerous import URLSafeTimedSerializer
-import smtplib  # Or use a library like Flask-Mail
+
 
 
 app = Flask(__name__)
