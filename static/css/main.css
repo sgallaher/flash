@@ -214,21 +214,31 @@ html, body {
   color: white; /* White text for better contrast */
 }
 
+
 .styled-table td:first-child {
-  width: 30%; /* First column takes 30% of table width */
+  width: 30%; /* First column takes 30% of the table width */
 }
 
-.styled-table td:second-child {
-  width: 50%; /* Second column takes 60% of table width */
+.styled-table td:nth-child(2) {
+  width: 70%; /* Second column takes 70% of the table width */
 }
-.styled-table td:third-child {
-  width: 10%; /* Third column takes 10% of table width */
-  text-align: center; /* Aligns text in the cells to the center */
+
+.styled-table td:nth-child(3),
+.styled-table td:nth-child(4) {
+  width: 10%; /* Default width for third and fourth columns */
+  text-align: center; /* Align text in the cells to the center */
 }
-.styled-table td:last-child {
-  width: 10%; /* Second column takes 10% of table width */
-  text-align: center; /* Aligns text in the cells to the center */
+
+/* When the last two columns are hidden */
+.styled-table.hide-cols td:nth-child(2) {
+  width: 100%; /* Second column takes the full width */
 }
+
+.styled-table.hide-cols td:nth-child(3),
+.styled-table.hide-cols td:nth-child(4) {
+  display: none; /* Hide third and fourth columns */
+}
+
 .styled-submit {
   position: relative;
   content: "Make Cards"; /* Text to display on the button */
