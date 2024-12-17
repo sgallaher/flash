@@ -24,6 +24,10 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 oauth= OAuth(app)
+
+load_dotenv()
+
+
 google = oauth.register(
     name='google',
     client_id=os.getenv('CLIENT_ID'),
