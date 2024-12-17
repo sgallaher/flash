@@ -3,7 +3,7 @@ import csv, re, os
 from flask import Flask, request, render_template, redirect, send_file, session, url_for, flash
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-from api_keys import CLIENT_ID, CLIENT_SECRET, SECRET_KEY
+from api_keys import CLIENT_ID, CLIENT_SECRET
 
 from models import *
 from dotenv import load_dotenv
