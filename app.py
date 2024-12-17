@@ -218,7 +218,7 @@ def index():
                     print("Split worked")
                     nextId = db.session.query(TblTerms).order_by(TblTerms.term_id.desc()).first()
                     print(f"Next term_id is {nextId.term_id+1}")
-                    new_term = TblTerms(term_id=nextId.term_id+1, name=term, definition=definition, session_id=session.get('id')
+                    new_term = TblTerms(term_id=nextId.term_id+1, name=term, definition=definition, session_id=session.get('id'))
                     db.session.add(new_term)
                     print(f"added {new_term}")
 
