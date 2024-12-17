@@ -182,9 +182,9 @@
           <tr>
               <th>Term Id</th>
               <th>Term</th>
-              <th>Definitionr</th>
-              <th>Image</th>
-              <th>Session Id</th>
+              <th>Definition</th>
+
+              <th>User</th>
 
           </tr>
           {% for term in allterms %}
@@ -192,15 +192,8 @@
               <td>{{term.term_id}}</td>
               <td>{{term.name}}</td>
               <td>{{term.definition}}</td>
-              <td>
-                <!-- 
-                {% if term.image %}
-                  <img src="data:image/png;base64,{{ term.image | b64encode | decode('utf-8') }}" alt="Term Image">
-                {% else %}
-                  <p>No image available</p>
-                {% endif %}-->
-              </td>
-              <td>{{term.session_id}}</td>
+
+              <td>{{term.session.user_id}}</td>
           </tr>
           {% endfor %}
       </table>
