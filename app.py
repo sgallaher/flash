@@ -246,13 +246,33 @@ def index():
 @app.route("/viewdb")
 def viewdb():
     allusers = db.session.query(TblUsers.email,TblUsers.role_id).join(TblRoles).all()
+
+     # Convert 'created' timestamps to readable datetime objects
+    for user in allusers:
+        if hasattr(user, 'created') and isinstance(user.created, int):
+            user.created = datetime.fromtimestamp(user.created).strftime('%Y-%m-%d %H:%M:%S')
+
+
     allsessions=db.session.query(TblSessions).join(TblUsers).all()
+         # Convert 'created' timestamps to readable datetime objects
+    for session in allsessions:
+        if hasattr(session, 'created') and isinstance(session.created, int):
+            session.created = datetime.fromtimestamp(session.created).strftime('%Y-%m-%d %H:%M:%S')
     titles = TblTitles.query.all()
+
+
+
     roles = TblRoles.query.all()
     units = TblUnits.query.all()
     lessons = TblLessons.query.all()
     allprints = TblPrintedCards.query.all()
-    return render_template("/viewdb/index.html", allusers=allusers, titles=titles, units=units, lessons=lessons,allsessions=allsessions, allprints=allprints)
+             # Convert 'created' timestamps to readable datetime objects
+    for print in allprints:
+        if hasattr(print, 'created') and isinstance(print.created, int):
+            print.created = datetime.fromtimestamp(print.created).strftime('%Y-%m-%d %H:%M:%S')
+    allterms = TblTerms.query.all()
+    return render_template("/viewdb/index.html", allusers=allusers, titles=titles, units=units, lessons=lessons,allsessions=allsessions, allprints=allprints, allterms=allterms)
+
 
 
 @app.route("/login", methods=['POST', 'GET'])
