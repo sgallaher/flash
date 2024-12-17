@@ -3,15 +3,16 @@ from flask_sqlalchemy import SQLAlchemy
 db = SQLAlchemy()
 
 # Define the tblTerms model
+
 class TblTerms(db.Model):
     __tablename__ = 'tbl_terms'
     term_id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(100), nullable=False)
     definition = db.Column(db.String(128), nullable=True)
     image = db.Column(db.LargeBinary, nullable=True)
-    session_id = db.Column(db.Integer, nullable=False)
-
-# Define other models (same as you have written above)
+    session_id = db.Column(db.Integer, db.ForeignKey('tbl_sessions.session_id'), nullable=False)
+    
+    session = db.relationship('TblSessions', backref='terms')
 
 class TblLessons(db.Model):
     __tablename__ = 'tbl_lessons'
