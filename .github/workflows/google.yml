@@ -116,8 +116,5 @@ jobs:
           ./kustomize build . | kubectl apply -f -
           kubectl rollout status deployment/$DEPLOYMENT_NAME
           kubectl get services -o wide
-      - name: Debug Secrets
-        run: |
-          echo "CLIENT_ID: ${{ secrets.CLIENT_ID }}"
-          echo "CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
+
 
