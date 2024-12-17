@@ -227,7 +227,7 @@ def index():
 
                     nextCardId = db.session.query(TblCards).order_by(TblCards.card_id.desc()).first()
                     print(f"Next card_id is {nextCardId.card_id+1}")
-                    new_card = TblCards(card_id=nextCardId.card_id+1, term_id=nextId.term_id+1, lesson_id=session["lesson"], session_id=session.get('session'))
+                    new_card = TblCards(card_id=nextCardId.card_id+1, term_id=nextId.term_id+1, lesson_id=session["lesson"], session_id=session.get('id'))
                     db.session.add(new_card)
             
             # Commit changes to the database
