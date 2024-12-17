@@ -79,6 +79,93 @@ html, body {
     margin-bottom: 8px;
    
   }
+
+  .navbar {
+    display: flex;
+    justify-content: space-between;
+    background-color: #4CAF50;
+    padding: 10px;
+    max-width: 100%;
+    
+    margin: 0 auto;
+    border-radius: 5px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+}
+
+.navbar-left a,
+.navbar-right a {
+    color: white;
+    text-decoration: none;
+    padding: 8px 15px;
+    margin-right: 15px;
+    border-radius: 4px;
+    font-size: 16px;
+}
+
+.navbar-left a:hover,
+.navbar-right a:hover {
+    background-color: #45a049;
+}
+
+/* Sign Up/Login Dropdown */
+.navbar-right .dropdown {
+    position: relative;
+}
+
+.navbar-right .dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    display: none;
+    background-color: #333;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.navbar-right .dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+.navbar-right .dropdown-menu a {
+    padding: 10px;
+    color: white;
+    text-decoration: none;
+}
+
+.navbar-right .dropdown-menu a:hover {
+    background-color: #444;
+}
+
+/* Responsive Layout */
+@media (max-width: 800px) {
+    .navbar {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .navbar-left,
+    .navbar-right {
+        flex-direction: column;
+        align-items: flex-start;
+        width: 100%;
+    }
+
+    .navbar-left a,
+    .navbar-right a {
+        margin-right: 0;
+        width: 100%;
+        padding: 12px;
+    }
+
+    .navbar-right {
+        margin-top: 10px;
+    }
+}
   
   /* File input styling */
   input[type="file"] {
@@ -195,6 +282,30 @@ html, body {
   display: flex;
   justify-content: center; /* Center the table horizontally */
   align-items: center; /* Aligns table vertically in the container if necessary */
+}
+
+.data-table {
+  width: 80%; /* Table occupies 80% of the container's width */
+  border-collapse: collapse; /* Removes space between borders */
+  margin: 0; /* Prevents unwanted margins */
+  align-content: center;
+}
+.data-table th, .styled-table td {
+  border: 1px solid #ddd; /* Border around cells */
+  padding: 8px; /* Space inside cells */
+  text-align: left; /* Aligns text in the cells to the left */
+}
+
+.data-table th {
+  background-color: green; /* Green background for table headers */
+  color: white; /* White text for better contrast */
+}
+
+.data-table td {
+  border: 1px solid #ddd; /* Border around cells */
+  padding: 8px; /* Space inside cells */
+  text-align: left; /* Aligns text in the cells to the left */
+
 }
 
 .styled-table {
