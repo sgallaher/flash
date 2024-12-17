@@ -419,26 +419,26 @@ def authorize_google():
     userinfo_endpoint=google.server_metadata['userinfo_endpoint']
     resp = google.get(userinfo_endpoint)
     user_info = resp.json()
-    username=user_info['email']
-    temp=username.split("@")
+    email=user_info['email']
+    temp=email.split("@")
     profile_picture = user_info.get('picture')
 
-    user=TblUsers.query.filter_by(email=username).first()
+    user=TblUsers.query.filter_by(email=email).first()
     if not user:
             
             new_user = TblUsers(
                 user_id=temp[0],
-                first_name=temp[0][0],
-                last_name=temp[0][1:],
+                first_name="",
+                last_name="",
                 title_id="", #no idea of gender
-                email=username,
+                email=email,
                 #not storing password and security questions
-
                 role_id=1,#create all users as normal from now on. Need to contact to make admin
                 created=int(datetime.utcnow().timestamp())
             )
             db.session.add(new_user)
             db.session.commit()
+            user=TblUsers.query.filter_by(email=email).first()
     session['user']= temp[0]
     session["oauth_token"] = token
     session['role_id']=user.role_id
