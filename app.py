@@ -1,17 +1,18 @@
 from io import TextIOWrapper
-import csv, re, os
+import csv, re
 from flask import Flask, request, render_template, redirect, send_file, session, url_for, flash
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-from api_keys import CLIENT_ID, CLIENT_SECRET
 
+#from models import TblTerms, TblLessons, TblUnits, TblCards, TblUsers,TblTitles, TblRoles,db
 from models import *
-from dotenv import load_dotenv
+
 #from cardsold import *
 from cards import *
 from itsdangerous import URLSafeTimedSerializer
 import smtplib  # Or use a library like Flask-Mail
 from authlib.integrations.flask_client import OAuth
+from api_keys import *
 
 
 app = Flask(__name__)
@@ -24,10 +25,6 @@ app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 
 oauth= OAuth(app)
-
-load_dotenv()
-
-
 google = oauth.register(
     name='google',
     client_id=CLIENT_ID,
@@ -221,7 +218,7 @@ def index():
                     print("Split worked")
                     nextId = db.session.query(TblTerms).order_by(TblTerms.term_id.desc()).first()
                     print(f"Next term_id is {nextId.term_id+1}")
-                    new_term = TblTerms(term_id=nextId.term_id+1, name=term, definition=definition, session_id=session.get('id'))
+                    new_term = TblTerms(term_id=nextId.term_id+1, name=term, definition=definition, session_id=0)
                     db.session.add(new_term)
                     print(f"added {new_term}")
 
@@ -274,7 +271,6 @@ def viewdb():
     return render_template("/viewdb/index.html", allusers=allusers, titles=titles, units=units, lessons=lessons,allsessions=allsessions, allprints=allprints, allterms=allterms)
 
 
-
 @app.route("/login", methods=['POST', 'GET'])
 def login():
     
@@ -285,11 +281,12 @@ def login():
         session['role_id'] = None
     if 'id' not in session:
         session['id'] = None
-
     if "attempts" not in session:
         session["attempts"] = 0
     #for testing purpose, set the attempts to 0, no matter what!
     session['attempts']=0
+
+    '''
 
     if request.method == 'POST':
         # Get the email and plain text password
@@ -297,7 +294,7 @@ def login():
         pw = request.form.get('password')
 
         # Query database to find the user
-        user = db.session.query(TblUsers.email, TblUsers.password, TblUsers.role_id).filter(TblUsers.email == username).first()
+        user = db.session.query(TblUsers).filter(TblUsers.email == username).first()
 
         if user and session['attempts'] < 3:
             # Check the password using Flask-Bcrypt
@@ -333,11 +330,11 @@ def login():
         else:
             if session['attempts'] >= 3:
                 message = "Too many failed attempts. Please try again later."
-    
+    '''
     return render_template("login/index.html", message=message)
 
 
-
+'''
 @app.route("/register", methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
@@ -397,7 +394,7 @@ def register():
     titles = TblTitles.query.all()
     roles = TblRoles.query.all()
     return render_template('register/index.html', titles=titles, roles=roles)
-    
+    '''
 
 @app.route("/logout", )
 def logout():
@@ -409,11 +406,8 @@ def logout():
 def login_google():
     try:
         redirect_uri=url_for('authorize_google', _external=True)
-        #developmental url
-        #return google.authorize_redirect(redirect_uri=f"https://{CODESPACE_NAME}-5000.app.github.dev/authorize/google")
-        #deployed url
-        return google.authorize_redirect(redirect_uri=f"https://mysterious-sherill-shanegallaher-435e1a89.koyeb.app/authorize/google")
-        
+        return google.authorize_redirect(redirect_uri=f"https://{CODESPACE_NAME}-5000.app.github.dev/authorize/google")
+        #-5000.app.github.dev
     except Exception as e :
         app.logger.error(f"Error during login:{str(e)}")
         return "Error occurred during login", 500
