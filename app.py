@@ -4,9 +4,9 @@ from flask import Flask, request, render_template, redirect, send_file, session,
 from flask_bcrypt import Bcrypt
 from datetime import datetime
 
-#from models import TblTerms, TblLessons, TblUnits, TblCards, TblUsers,TblTitles, TblRoles,db
-from models import *
 
+from models import *
+from dotenv import load_dotenv
 #from cardsold import *
 from cards import *
 from itsdangerous import URLSafeTimedSerializer
