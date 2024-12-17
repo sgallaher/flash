@@ -13,6 +13,7 @@
           {{ message }}
           {% endif %}
         </div>
+        <!--
         <div class="form-group">
           <label for="email">Email:</label>
           <input type="email" name="user" id="email" placeholder="Enter your email" required>
@@ -24,12 +25,12 @@
         <div class="form-group">
           <button type="submit" class="confirm-btn">Login</button>
         </div>
+      -->
         <div class="form-group">
           <input type="button" class="confirm-btn" value="Login with Google" 
                  onclick="window.location.href='{{ url_for('login_google') }}'">
       </div>
            
-        <p>Don't have an account? <a href="/register">Register here</a></p>
       </form>
     </div>
   </main>
