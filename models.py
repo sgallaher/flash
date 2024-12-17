@@ -80,9 +80,9 @@ class TblUsers(db.Model):
     last_name = db.Column(db.String(128), nullable=False)
     title_id = db.Column(db.String(4), nullable=True)
     email = db.Column(db.String(128), nullable=False, unique=True)
-    password = db.Column(db.String(255), nullable=False)
-    question = db.Column(db.String(255), nullable=False)
-    answer = db.Column(db.String(255), nullable=False)
+    password = db.Column(db.String(255), nullable=True)
+    question = db.Column(db.String(255), nullable=True)
+    answer = db.Column(db.String(255), nullable=True)
     role_id = db.Column(db.Integer, db.ForeignKey('tbl_roles.role_id'), nullable=False)
     created = db.Column(db.Integer, nullable=False)
 
@@ -108,3 +108,23 @@ class TblSessions(db.Model):
     terminated = db.Column(db.Integer, nullable=True)
 
     user = db.relationship('TblUsers', backref='sessions')
+
+class TblSubjectEnrolment(db.Model):
+    __tablename__ = 'tbl_subject_enrolment'
+    enrolment_id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.String(50), db.ForeignKey('tbl_users.user_id'), nullable=False)
+    subject_id = db.Column(db.Integer, db.ForeignKey('tbl_subjects.subject_id'), nullable=True)
+
+    user = db.relationship('TblUsers', backref='subject_enrolment')
+    subject = db.relationship('TblSubjects', backref='subject_enrolment')
+
+    
+class TblPrintedCards(db.Model):
+    __tablename__ = 'tbl_printed_cards'
+    print_id = db.Column(db.Integer, primary_key=True)
+    session_id = db.Column(db.Integer, db.ForeignKey('tbl_sessions.session_id'), nullable=True)
+    lesson_id = db.Column(db.Integer, db.ForeignKey('tbl_lessons.lesson_id'), nullable=True)
+    created = db.Column(db.Integer, nullable=False)
+
+    session = db.relationship('TblSessions', backref='printed_cards')
+    lesson = db.relationship('TblLessons', backref='printed_cards')

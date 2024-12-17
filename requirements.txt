@@ -9,4 +9,4 @@ gunicorn==21.2.0
 python-dotenv==1.0.0  # For environment variable management
 reportlab==4.2.5  # For PDF generation
 itsdangerous
-
+Authlib
