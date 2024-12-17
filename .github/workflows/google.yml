@@ -102,6 +102,11 @@ jobs:
 
           docker push "${DOCKER_TAG}"
 
+      - name: Debug Secrets
+        run: |
+          echo "CLIENT_ID: ${{ secrets.CLIENT_ID }}"
+          echo "CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}"
+
       # Set up kustomize
       - name: 'Set up Kustomize'
         run: |-
