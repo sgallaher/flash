@@ -1,4 +1,4 @@
-import csv
+'''import csv
 from flask import Flask
 from models import db, TblTerms
 
@@ -39,3 +39,4 @@ with app.app_context():
     except Exception as e:
         db.session.rollback()
         print(f"An error occurred: {e}")
+'''
