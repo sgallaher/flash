@@ -12,7 +12,6 @@ from cards import *
 from itsdangerous import URLSafeTimedSerializer
 import smtplib  # Or use a library like Flask-Mail
 from authlib.integrations.flask_client import OAuth
-from api_keys import *
 
 
 app = Flask(__name__)
