@@ -3,7 +3,7 @@ import csv, re, os
 from flask import Flask, request, render_template, redirect, send_file, session, url_for, flash
 from flask_bcrypt import Bcrypt
 from datetime import datetime
-
+from app_keys import *
 
 from models import *
 from dotenv import load_dotenv
@@ -30,8 +30,8 @@ load_dotenv()
 
 google = oauth.register(
     name='google',
-    client_id=os.getenv('CLIENT_ID'),
-    client_secret=os.getenv('CLIENT_SECRET'),
+    client_id=CLIENT_ID,
+    client_secret=CLIENT_SECRET,
     server_metadata_url="https://accounts.google.com/.well-known/openid-configuration",
     authorize_url="https://accounts.google.com/o/oauth2/auth",  # Explicitly set this
     client_kwargs={"scope": "openid profile email"}
