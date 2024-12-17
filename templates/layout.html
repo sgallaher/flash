@@ -7,115 +7,34 @@
   <link rel="stylesheet" href="static/css/main.css">
   <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-  <style>
-      /* Main Menu Styles */
-      body {
-          font-family: Arial, sans-serif;
-          margin: 0;
-          padding: 0;
-      }
 
-      .navbar {
-          display: flex;
-          justify-content: space-between;
-          background-color: #4CAF50;
-          padding: 10px;
-          max-width: 800px;
-          margin: 0 auto;
-          border-radius: 5px;
-          box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-      }
-
-      .navbar-left,
-      .navbar-right {
-          display: flex;
-          align-items: center;
-      }
-
-      .navbar-left a,
-      .navbar-right a {
-          color: white;
-          text-decoration: none;
-          padding: 8px 15px;
-          margin-right: 15px;
-          border-radius: 4px;
-          font-size: 16px;
-      }
-
-      .navbar-left a:hover,
-      .navbar-right a:hover {
-          background-color: #45a049;
-      }
-
-      /* Sign Up/Login Dropdown */
-      .navbar-right .dropdown {
-          position: relative;
-      }
-
-      .navbar-right .dropdown-menu {
-          position: absolute;
-          top: 100%;
-          right: 0;
-          display: none;
-          background-color: #333;
-          box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-      }
-
-      .navbar-right .dropdown:hover .dropdown-menu {
-          display: block;
-      }
-
-      .navbar-right .dropdown-menu a {
-          padding: 10px;
-          color: white;
-          text-decoration: none;
-      }
-
-      .navbar-right .dropdown-menu a:hover {
-          background-color: #444;
-      }
-
-      /* Responsive Layout */
-      @media (max-width: 800px) {
-          .navbar {
-              flex-direction: column;
-              padding: 15px;
-          }
-
-          .navbar-left,
-          .navbar-right {
-              flex-direction: column;
-              align-items: flex-start;
-              width: 100%;
-          }
-
-          .navbar-left a,
-          .navbar-right a {
-              margin-right: 0;
-              width: 100%;
-              padding: 12px;
-          }
-
-          .navbar-right {
-              margin-top: 10px;
-          }
-      }
-  </style>
 </head>
-<body>
+<body><div class="container">
 
   <!-- Main Navigation Menu -->
   <nav class="navbar">
       <!-- Left Side Menu -->
       <div class="navbar-left">
           <a href="/">Home</a>
-          {% if session['user'] %}<a href="/viewdb">View All Data</a>{% endif %}
+          {% if session['user'] and session.get('role_id')==0 %}<a href="/viewdb">View All Data</a>{% endif %}
       </div>
 
       <!-- Right Side Menu (Sign Up/Login) -->
       <div class="navbar-right">
         {% if session.get('user') %}
-        <a href="logout">Logout</a>
+        <div class="dropdown">
+            <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">
+            
+                {% if session.get('profile_picture') %}
+                <img src="{{ session['profile_picture'] }}" alt="User Icon" style="border-radius: 50%; width: 50px; height: 50px;">
+                {% else %}
+                {{ session.get('user') }}
+                {% endif %}
+                </a>
+            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                <a class="dropdown-item" href="logout">Log out</a>
+            </div>
+        </div>
         {% else %}
           <div class="dropdown">
               <a href="#" class="dropdown-toggle" id="dropdownMenuButton" data-toggle="dropdown">Sign Up / Login</a>
@@ -132,7 +51,7 @@
 {% block body %}
 
 {% endblock %}
-
+</div>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.bundle.min.js"></script>
 
