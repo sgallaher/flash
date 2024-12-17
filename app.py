@@ -406,7 +406,7 @@ def logout():
 def login_google():
     try:
         redirect_uri=url_for('authorize_google', _external=True)
-        return google.authorize_redirect(redirect_uri=f"https://mysterious-sherill-shanegallaher-435e1a89.koyeb.app//authorize/google")
+        return google.authorize_redirect(redirect_uri=f"https://mysterious-sherill-shanegallaher-435e1a89.koyeb.app/authorize/google")
         #-5000.app.github.dev
     except Exception as e :
         app.logger.error(f"Error during login:{str(e)}")
